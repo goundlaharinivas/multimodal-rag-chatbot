@@ -2,7 +2,7 @@ import { createEmbedding } from "@/lib/embeddings";
 import { searchDocuments } from "@/lib/vectorstore";
 
 export async function getDocumentContext(query: string) {
-  const embedding = await createEmbedding(query);
+  const embedding = (await createEmbedding(query)) as number[];
 
   const results = await searchDocuments(embedding, 3);
 
