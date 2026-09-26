@@ -1,19 +1,30 @@
-import { pipeline } from "@xenova/transformers";
+export function createEmbedding(text: string): number[] {
+  const dimensions = 384;
+  const vector = new Array(dimensions).fill(0);
 
-let extractor: any = null;
+  const words = text
+    .toLowerCase()
+    .replace(/[^\w\s]/g, " ")
+    .split(/\s+/)
+    .filter(Boolean);
 
-export async function createEmbedding(text: string) {
-  if (!extractor) {
-    extractor = await pipeline(
-      "feature-extraction",
-      "Xenova/all-MiniLM-L6-v2"
-    );
+  for (const word of words) {
+    let hash = 0;
+
+    for (let i = 0; i < word.length; i++) {
+      hash = (hash * 31 + word.charCodeAt(i)) % dimensions;
+    }
+
+    vector[hash] += 1;
   }
 
-  const output = await extractor(text, {
-    pooling: "mean",
-    normalize: true,
-  });
+  const magnitude = Math.sqrt(
+    vector.reduce((sum, value) => sum + value * value, 0)
+  );
 
-  return Array.from(output.data);
+  if (magnitude > 0) {
+    return vector.map((value) => value / magnitude);
+  }
+
+  return vector;
 }
