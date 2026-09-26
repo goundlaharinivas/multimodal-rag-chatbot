@@ -6,7 +6,7 @@ The application also includes a calculator tool for performing mathematical oper
 
 ## 🚀 Live Demo
 
-**Live Demo:** `PASTE YOUR VERCEL PRODUCTION URL HERE`
+**Live Demo:** `https://multimodal-rag-chatbot-nc0boucdt-goundlaharinivas.vercel.app/`
 
 ## 📌 Features
 
